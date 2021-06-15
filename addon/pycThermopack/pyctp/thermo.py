@@ -59,6 +59,7 @@ class thermopack(object):
         self.s_eos_enthalpy = getattr(self.tp, self.get_export_name("eos", "enthalpy"))
         self.s_eos_compmoleweight = getattr(self.tp, self.get_export_name("eos", "compmoleweight"))
         self.s_eos_idealenthalpysingle = getattr(self.tp, self.get_export_name("eos", "idealenthalpysingle"))
+        self.s_eos_idealentropysingle = getattr(self.tp, self.get_export_name("eos", "idealentropysingle"))
 
         # Speed of sound
         #self.sos_singlePhaseSpeedOfSound = getattr(self.tp, '__speed_of_sound_MOD_singlephasespeedofsound')
@@ -877,16 +878,14 @@ class thermopack(object):
 
         return return_tuple
 
-    def idealenthalpysingle(self,temp,press,j,dhdt=None,dhdp=None):
+    def idealenthalpysingle(self,temp,j,dhdt=None,dhdp=None):
         """ Calculate specific ideal enthalpy
             Note that the order of the output match the default order of input for the differentials.
             Note further that dhdt, and dhdp only are flags to enable calculation.
 
         Args:
             temp (float): Temperature (K)
-            press (float): Pressure (Pa)
-            x (array_like): Molar composition
-            phase (int): Calcualte root for specified phase
+            j (int): Component index (FORTRAN)
             dhdt (logical, optional): Calculate ideal enthalpy differentials with respect to temperature while pressure and composition are held constant. Defaults to None.
             dhdp (logical, optional): Calculate ideal enthalpy differentials with respect to pressure while temperature and composition are held constant. Defaults to None.
 
@@ -897,7 +896,7 @@ class thermopack(object):
         null_pointer = POINTER(c_double)()
 
         temp_c = c_double(temp)
-        press_c = c_double(press)
+        press_c = c_double(0.0)
         j_c = c_int(j)
         h_c = c_double(0.0)
 
@@ -930,6 +929,60 @@ class thermopack(object):
             return_tuple += (dhdt_c[0], )
         if not dhdp is None:
             return_tuple += (dhdp_c[0], )
+
+        return return_tuple
+
+    def idealentropysingle(self,temp,press,j,dsdt=None,dsdp=None):
+        """ Calculate specific ideal entropy
+            Note that the order of the output match the default order of input for the differentials.
+            Note further that dhdt, and dhdp only are flags to enable calculation.
+
+        Args:
+            temp (float): Temperature (K)
+            press (float): Pressure (Pa)
+            j (int): Component index (FORTRAN)
+            dsdt (logical, optional): Calculate ideal entropy differentials with respect to temperature while pressure and composition are held constant. Defaults to None.
+            dsdp (logical, optional): Calculate ideal entropy differentials with respect to pressure while temperature and composition are held constant. Defaults to None.
+
+        Returns:
+            float: Specific ideal entropy (J/mol/K), and optionally differentials
+        """
+        null_pointer = POINTER(c_double)()
+
+        temp_c = c_double(temp)
+        press_c = c_double(press)
+        j_c = c_int(j)
+        s_c = c_double(0.0)
+
+        if dsdt is None:
+            dsdt_c = null_pointer
+        else:
+            dsdt_c = POINTER(c_double)(c_double(0.0))
+        if dsdp is None:
+            dsdp_c = null_pointer
+        else:
+            dsdp_c = POINTER(c_double)(c_double(0.0))
+
+        self.s_eos_idealentropysingle.argtypes = [POINTER( c_double ),
+                                                  POINTER( c_double ),
+                                                  POINTER( c_int ),
+                                                  POINTER( c_double ),
+                                                  POINTER( c_double ),
+                                                  POINTER( c_double )]
+
+        self.s_eos_idealentropysingle.restype = None
+
+        self.s_eos_idealentropysingle(byref(temp_c),
+                                      byref(press_c),
+                                      byref(j_c),
+                                      byref(s_c),
+                                      dsdt_c,
+                                      dsdp_c)
+        return_tuple = (s_c.value, )
+        if not dsdt is None:
+            return_tuple += (dsdt_c[0], )
+        if not dsdp is None:
+            return_tuple += (dsdp_c[0], )
 
         return return_tuple
 

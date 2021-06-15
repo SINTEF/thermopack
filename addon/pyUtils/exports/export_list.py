@@ -82,7 +82,6 @@ def append_export(method, module=None, isBindC=False):
 exports = []
 
 append_export("thermopack_init_c", isBindC=True)
-append_export("thermopack_init_c", isBindC=True)
 append_export("thermopack_pressure_c", isBindC=True)
 append_export("thermopack_specific_volume_c", isBindC=True)
 append_export("thermopack_tpflash_c", isBindC=True)
@@ -129,6 +128,7 @@ append_export("entropy", "eos")
 append_export("enthalpy", "eos")
 append_export("compmoleweight", "eos")
 append_export("idealenthalpysingle", "eos")
+append_export("idealentropysingle", "eos")
 
 append_export("init_thermo", "eoslibinit")
 append_export("init_cubic", "eoslibinit")
