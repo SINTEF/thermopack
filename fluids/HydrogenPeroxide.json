@@ -1,34 +1,33 @@
 {
-  "ident": "NC19",
-  "formula": "C19H40",
-  "cas_number": "629-92-5",
-  "name": "N-NONADECANE",
+  "ident": "H2O2",
+  "formula": "H2O2",
+  "cas_number": "7722-84-1",
+  "name": "HYDROGENPEROXIDE",
   "aliases": [
-    "N-Nonadecane",
-    "Nonadecane"
+    "dihydrogen peroxide"
   ],
-  "mol_weight": 268.53,
+  "mol_weight": 34.0147,
   "critical": {
     "ref": "Default",
-    "bib_reference": "",
-    "temperature": 755.0,
-    "pressure": 1160000.0,
-    "compressibility": 0.242
+    "bib_reference": "10.1016/j.fluid.2016.09.003",
+    "temperature": 730.15,
+    "pressure": 217.00e5,
+    "compressibility": 0.2748
   },
   "triple": {
     "ref": "Default",
-    "bib_reference": "",
-    "temperature": 0.0,
+    "bib_reference": "NIST",
+    "temperature": 272.7403,
     "pressure": 0.0
   },
   "acentric_factor": {
     "ref": "Default",
-    "bib_reference": "",
-    "acf": 0.845
+    "bib_reference": "10.1016/j.fluid.2016.09.003",
+    "acf": 0.3582
   },
   "boiling_temperature": {
-    "bib_reference": "",
-    "temperature": 602.34
+    "bib_reference": "10.1002/chem.200400104",
+    "temperature": 424.55
   },
   "saturation": {
     "ref": "Default",
@@ -44,27 +43,27 @@
   },
   "ideal_heat_capacity-1": {
     "ref": "Default",
-    "bib_reference": "",
-    "correlation": 8,
+    "bib_reference": "https://webbook.nist.gov",
+    "correlation": 12,
     "cp": [
-      26.447,
-      -0.009998,
-      0.00050697,
-      -6.7912e-07,
-      2.7428e-10,
+      34.25667,
+      55.18445,
+      -35.15443,
+      9.087440,
+      -0.422157,
       0.0,
       0.0,
       0.0,
       0.0,
       0.0
     ],
-    "Tmin": -20.0,
-    "Tmax": 1200.0
+    "Tmin": 0.0,
+    "Tmax": 2000.0
   },
   "reference_state": {
-    "bib_reference": "",
-    "enthalpy": 0.0,
-    "entropy": 0.0
+    "bib_reference": "https://webbook.nist.gov",
+    "enthalpy": -136106.4,
+    "entropy": 232.95
   },
   "standard_formation_energy": {
     "bib_reference": "",
@@ -73,22 +72,22 @@
   },
   "rackett_factor": {
     "bib_reference": "",
-    "Zra": 0.23337
+    "Zra": 0.2670
   },
   "SRK": {
     "TWU-1": {
       "ref": "tcRK",
       "bib_reference": "10.1016/j.fluid.2016.09.003",
       "correlation": [
-        0.6086,
-        0.8024,
-        2.5271
+        0.4351,
+        0.8775,
+        2.1604
       ]
     },
     "volume_shift": {
       "ref": "tcRK",
       "bib_reference": "10.1016/j.fluid.2016.09.003",
-      "ciA": 0.0001379895,
+      "ciA": 3.3532e-06,
       "ciB": 0.0,
       "ciC": 0.0,
       "correlation": 1
@@ -99,15 +98,15 @@
       "ref": "tcPR",
       "bib_reference": "10.1016/j.fluid.2016.09.003",
       "correlation": [
-        0.5946,
-        0.7934,
-        2.2654
+        0.3191,
+	0.8649,
+        2.2883
       ]
     },
     "volume_shift": {
       "ref": "tcPR",
       "bib_reference": "10.1016/j.fluid.2016.09.003",
-      "ciA": 6.49064e-05,
+      "ciA": -0.8741e-05,
       "ciB": 0.0,
       "ciC": 0.0,
       "correlation": 1
