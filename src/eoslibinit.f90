@@ -78,6 +78,7 @@ contains
     use thermopack_constants, only: clen, TREND, THERMOPACK
     use cbselect,   only: SelectCubicEOS
     use compdata,   only: SelectComp, initCompList
+    use ideal, only: set_reference_energies
     use thermopack_var,  only: nc, nce, ncsym, complist, apparent, nph
     use eosdata,    only: cpaSRK, cpaPR, eosPC_SAFT, eosPeTS, eosBH_pert
     !$ use omp_lib, only: omp_get_max_threads
@@ -138,6 +139,9 @@ contains
 
     ! Initialize components
     call SelectComp(complist,nce,"DEFAULT",act_mod_ptr%comps,ierr)
+
+    ! Set reference entalpies and entropies
+    call set_reference_energies(act_mod_ptr%comps)
 
     ! Set cptype
     if (present(cptype)) then
@@ -238,6 +242,7 @@ contains
   !----------------------------------------------------------------------------
   subroutine init_cubic(comps,eos,mixing,alpha,parameter_reference,vol_shift)
     use compdata,   only: SelectComp, initCompList
+    use ideal, only: set_reference_energies
     use thermopack_var, only: nc, nce, ncsym, complist, nph, apparent
     use thermopack_constants, only: THERMOPACK
     use eos_container, only: allocate_eos
@@ -319,6 +324,9 @@ contains
     ! Initialize components module
     call SelectComp(complist,nce,paramref_loc,act_mod_ptr%comps,ierr)
 
+    ! Set reference entalpies and entropies
+    call set_reference_energies(act_mod_ptr%comps)
+
     ! Initialize volume shift
     if (volshift_loc) then
        volumeShiftId = InitVolumeShift(nc,act_mod_ptr%comps,'Peneloux',eos, param_ref=paramref_loc)
@@ -380,6 +388,7 @@ contains
        ref_eos,ref_comp,ref_alpha,&
        parameter_ref)
     use compdata,   only: SelectComp, initCompList
+    use ideal, only: set_reference_energies
     use thermopack_var, only: nc, nce, ncsym, complist, nph, apparent
     use thermopack_constants, only: THERMOPACK, ref_len
     use stringmod,  only: uppercase
@@ -439,6 +448,9 @@ contains
 
     ! Initialize components module
     call SelectComp(complist,nce,param_ref,act_mod_ptr%comps,ierr)
+
+    ! Set reference entalpies and entropies
+    call set_reference_energies(act_mod_ptr%comps)
 
     act_eos_ptr => get_active_eos()
     act_eos_ptr%volumeShiftId = NOSHIFT
@@ -760,6 +772,7 @@ contains
   !----------------------------------------------------------------------------
   subroutine init_saftvrmie(comps,parameter_reference)
     use compdata,   only: SelectComp, initCompList
+    use ideal, only: set_reference_energies
     use thermopack_var,  only: nce, complist
     use thermopack_constants, only: THERMOPACK, ref_len
     use stringmod,  only: uppercase
@@ -805,6 +818,9 @@ contains
 
     ! Initialize components module
     call SelectComp(complist,nce,param_ref,act_mod_ptr%comps,ierr)
+
+    ! Set reference entalpies and entropies
+    call set_reference_energies(act_mod_ptr%comps)
 
     ! Initialize Thermopack
     act_eos_ptr => act_mod_ptr%eos(1)%p_eos
@@ -855,6 +871,7 @@ contains
   !----------------------------------------------------------------------------
   subroutine init_pcsaft(comps,parameter_reference)
     use compdata,   only: SelectComp, initCompList
+    use ideal, only: set_reference_energies
     use thermopack_var,  only: nc, nce, ncsym, complist, apparent, nph
     use thermopack_constants, only: THERMOPACK, ref_len
     use stringmod,  only: uppercase
@@ -902,6 +919,9 @@ contains
     ! Initialize components module
     call SelectComp(complist,nce,param_ref,act_mod_ptr%comps,ierr)
 
+    ! Set reference entalpies and entropies
+    call set_reference_energies(act_mod_ptr%comps)
+
     ! Initialize Thermopack
     call init_thermopack("PC-SAFT", "Classic", "Classic", nphase=3,&
          saft_ref=param_ref)
@@ -919,6 +939,7 @@ contains
   !----------------------------------------------------------------------------
   subroutine init_cpa(comps,eos,mixing,alpha,parameter_reference)
     use compdata,   only: SelectComp, initCompList
+    use ideal, only: set_reference_energies
     use thermopack_var,  only: nc, nce, ncsym, complist, apparent, nph
     use thermopack_constants, only: THERMOPACK
     use stringmod,  only: uppercase
@@ -973,6 +994,9 @@ contains
     ! Initialize components module
     call SelectComp(complist,nce,param_ref,act_mod_ptr%comps,ierr)
 
+    ! Set reference entalpies and entropies
+    call set_reference_energies(act_mod_ptr%comps)
+
     alpha_loc = "Classic"
     mixing_loc = "Classic"
     if (present(mixing)) mixing_loc = uppercase(mixing)
@@ -994,6 +1018,7 @@ contains
   !----------------------------------------------------------------------------
   subroutine init_lee_kesler(comps,parameter_reference)
     use compdata,   only: SelectComp, initCompList
+    use ideal, only: set_reference_energies
     use thermopack_var,  only: nc, nce, ncsym, complist, apparent, nph
     use thermopack_constants, only: THERMOPACK, ref_len
     use stringmod,  only: uppercase
@@ -1042,8 +1067,12 @@ contains
     ! Initialize components module
     call SelectComp(complist,nce,param_ref,act_mod_ptr%comps,ierr)
 
+    ! Set reference entalpies and entropies
+    call set_reference_energies(act_mod_ptr%comps)
+
     call init_thermopack("LK","CLASSIC", &
          "CLASSIC", nphase=3, kij_ref=param_ref)
+
     ! Set globals
     call update_global_variables_form_active_thermo_model()
 
@@ -1057,6 +1086,7 @@ contains
   !----------------------------------------------------------------------------
   subroutine init_multiparameter(comps, eos)
     use compdata,   only: SelectComp, initCompList
+    use ideal, only: set_reference_energies
     use thermopack_var,  only: nc, nce, ncsym, complist, apparent, nph
     use thermopack_constants, only: THERMOPACK
     use stringmod,  only: uppercase
@@ -1098,6 +1128,9 @@ contains
     ! Initialize components module
     call SelectComp(complist,nce,"DEFAULT",act_mod_ptr%comps,ierr)
 
+    ! Set reference entalpies and entropies
+    call set_reference_energies(act_mod_ptr%comps)
+
     ! Set globals
     call update_global_variables_form_active_thermo_model()
 
@@ -1117,6 +1150,7 @@ contains
   !----------------------------------------------------------------------------
   subroutine init_pets(parameter_reference)
     use compdata, only: SelectComp, initCompList
+    use ideal, only: set_reference_energies
     use thermopack_var,  only: nc, nce, ncsym, complist, apparent, nph
     use thermopack_constants, only: THERMOPACK, ref_len
     use stringmod,  only: uppercase
@@ -1167,6 +1201,9 @@ contains
 
     ! Initialize components module
     call SelectComp(complist,nce,param_ref,act_mod_ptr%comps,ierr)
+
+    ! Set reference entalpies and entropies
+    call set_reference_energies(act_mod_ptr%comps)
 
     ! Initialize Thermopack
     act_eos_ptr => act_mod_ptr%eos(1)%p_eos

@@ -836,6 +836,9 @@ contains
     case (THERMOPACK)
       ! Thermopack
       h = Hideal_apparent(act_mod_ptr%comps,j,T)
+      if (present(dhdt)) then
+        dhdt = CPideal_apparent(act_mod_ptr%comps, j, T) ! J/mol/K^2
+      end if
     case (TREND)
       ! TREND
       h = trend_ideal_enthalpy(T,j)

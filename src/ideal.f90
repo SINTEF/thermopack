@@ -47,6 +47,7 @@ module ideal
        CPideal_mix, Hideal_mix, TP_Sideal_mix, TV_Yideal_mix, &
        Sideal_Vn, TV_Sideal_mix, Fideal_mix_SI
   public :: Hideal_apparent, TP_Sideal_apparent, Cpideal_apparent
+  public :: set_reference_energies
 
 contains
   !---------------------------------------------------------------------- >
@@ -1028,5 +1029,32 @@ contains
     end if
 
   end subroutine Fideal_mix_SI
+
+  !---------------------------------------------------------------------- >
+  !>  Set the ideal gas reference entropy and enthalpy
+  !!
+  !! \param comps Component array
+  !!
+  !! \author Morten Hammer
+  subroutine set_reference_energies(comps)
+    use compdata, only: gendata_pointer
+    use thermopack_constants, only: Rgas
+    implicit none
+    type(gendata_pointer), intent(inout) :: comps(:)
+    !
+    real :: T0
+    integer :: i
+    real :: s_id, h_id
+    T0 = 298.15
+    do i=1,size(comps)
+      ! Test if parameters are given
+      if (comps(i)%p_comp%sref /= 0 .or. comps(i)%p_comp%href /= 0) then
+        s_id = Sideal_T(comps(i)%p_comp, i, T0) - comps(i)%p_comp%sref - Rgas*log(1e5)
+        comps(i)%p_comp%sref = comps(i)%p_comp%sref - s_id
+        h_id = Hideal(comps(i)%p_comp, i, T0) - comps(i)%p_comp%href
+        comps(i)%p_comp%href = comps(i)%p_comp%href - h_id
+      endif
+    enddo
+  end subroutine set_reference_energies
 
 end module ideal
