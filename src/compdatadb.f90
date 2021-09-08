@@ -1,6 +1,6 @@
 !> Automatically generated to file compdatadb.f90
 !! using utility python code pyUtils
-!! Time stamp: 2021-08-02T14:35:51.331965
+!! Time stamp: 2021-09-08T14:13:46.075047
 
 module compdatadb
   use compdata, only: gendatadb, cpdata, alphadatadb, cidatadb
@@ -3254,7 +3254,7 @@ module compdatadb
       Tb = 90.2000, &
       Ttr = 0.0000, &
       Ptr = 0.0000, &
-      sref = 0.0000, &
+      sref = 205.1500, &
       href = 0.0000, &
       DfH = 0.0000, &
       DfG = 0.0000, &
@@ -5582,8 +5582,8 @@ module compdatadb
       Tb = 373.2000, &
       Ttr = 0.0000, &
       Ptr = 0.0000, &
-      sref = 0.0000, &
-      href = 0.0000, &
+      sref = 188.8400, &
+      href = -241826.4000, &
       DfH = 0.0000, &
       DfG = 0.0000, &
       psatcode = 1, &
