@@ -9,6 +9,14 @@
 #=============================================================================
 # Set some general variables
 #=============================================================================
+
+$(warning "Deprecation: ThermoPack is now being maintained in the ThermoTools repo at https://github.com/thermotools")
+BUILD_DEPRECATED ?= $(shell bash -c 'read -p "Are you sure you wish to continue? (Y/n)" yn; echo $$yn')
+
+ifneq ("${BUILD_DEPRECATED}", "Y")
+$(error "Exiting non-maintained build")
+endif
+
 PROC = x86_64
 
 # Detect OS into UNAME

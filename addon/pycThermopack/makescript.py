@@ -7,8 +7,19 @@ import shutil
 import sys
 from pathlib import Path
 import map_platform_specifics
+import warnings
+
+
 
 if __name__ == "__main__":
+
+    warnings.warn('ThermoPack is now part of the ThermoTools project, being maintained at '
+                  'https://github.com/thermotools/thermopack', DeprecationWarning)
+
+    yn = input('Are you sure you wish to continue? (Y/n)')
+    if yn != 'Y':
+        exit(0)
+
     parser = argparse.ArgumentParser()
     parser.add_argument("mode", type=str, help="optim or debug")
 
