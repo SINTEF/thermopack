@@ -5,7 +5,7 @@ import sys
 from ctypes import *
 from os import path
 import numpy as np
-import warninngs
+import warnings
 from . import plotutils, utils, platform_specifics
 
 if utils.gcc_major_version_greater_than(7):
