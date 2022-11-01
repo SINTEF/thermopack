@@ -5,13 +5,13 @@ import sys
 from ctypes import *
 from os import path
 import numpy as np
+import warnings
 from . import plotutils, utils, platform_specifics
 
 if utils.gcc_major_version_greater_than(7):
     c_len_type = c_size_t  # c_size_t on GCC > 7
 else:
     c_len_type = c_int
-
 
 class thermopack(object):
     """
@@ -22,6 +22,10 @@ class thermopack(object):
         """
         Load libthermopack.(so/dll) and initialize function pointers
         """
+
+        warnings.warn('ThermoPack is now part of the ThermoTools project, being maintained at '
+                  'https://github.com/thermotools/thermopack', DeprecationWarning)
+
         pf_specifics = platform_specifics.get_platform_specifics()
         self.prefix = pf_specifics["prefix"]
         self.module = pf_specifics["module"]
